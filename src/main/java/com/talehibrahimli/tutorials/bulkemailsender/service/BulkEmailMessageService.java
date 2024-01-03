@@ -26,6 +26,7 @@ public class BulkEmailMessageService {
             emailMessageDto.setTo(to);
             emailMessageDto.setSubject(bulkEmailMessageDto.getSubject());
             emailMessageDto.setBody(bulkEmailMessageDto.getBody());
+            emailMessageDto.setPriority(bulkEmailMessageDto.getPriority());
 
             emailMessageService.create(emailMessageDto);
         }

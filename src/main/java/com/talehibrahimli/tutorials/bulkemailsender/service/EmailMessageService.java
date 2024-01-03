@@ -6,6 +6,7 @@ import com.talehibrahimli.tutorials.bulkemailsender.entity.EmailMessageStatus;
 import com.talehibrahimli.tutorials.bulkemailsender.mapper.EmailMessageMapper;
 import com.talehibrahimli.tutorials.bulkemailsender.repository.EmailMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,12 +14,14 @@ import org.springframework.stereotype.Service;
 public class EmailMessageService {
     private final EmailMessageRepository repository;
     private final EmailMessageMapper mapper;
-    private final EmailMessageSenderService emailMessageSenderService;
+    private final KafkaTemplate<Long, Long> kafkaTemplate;
 
     public void create(EmailMessageDto emailMessageDto) {
         EmailMessageEntity entity = mapper.to(emailMessageDto);
         entity.setStatus(EmailMessageStatus.PENDING);
 
         repository.save(entity);
+
+        kafkaTemplate.send("emailMessageTopic", entity.getId());
     }
 }

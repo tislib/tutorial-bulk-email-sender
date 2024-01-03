@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 @Log4j
 public class EmailMessageSchedulerService {

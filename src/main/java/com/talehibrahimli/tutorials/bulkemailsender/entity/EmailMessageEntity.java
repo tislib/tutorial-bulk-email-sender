@@ -22,4 +22,7 @@ public class EmailMessageEntity {
 
     @Enumerated(EnumType.STRING)
     private EmailMessageStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private EmailMessagePriority priority;
 }

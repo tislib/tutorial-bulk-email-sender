@@ -22,6 +22,7 @@ Content-Type: application/json
   "from": "contact@apibrew.io",
   "to": "talehsmail@gmail.com",
   "subject": "Test subject",
+  "piority": "HIGH",
   "body": "Test Body"
 }
 
@@ -37,6 +38,7 @@ Content-Type: application/json
   "from": "contact@apibrew.io",
   "to": ["talehsmail@gmail.com", "talehsmail@gmail.com"],
   "subject": "Test subject",
+  "piority": "LOW",
   "body": "Test Body"
 }
 
