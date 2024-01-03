@@ -26,3 +26,18 @@ Content-Type: application/json
 }
 
 ```
+
+## Bulk Email Message API
+
+```http request
+POST /api/v1/bulk-email-messages
+Content-Type: application/json
+
+{
+  "from": "contact@apibrew.io",
+  "to": ["talehsmail@gmail.com", "talehsmail@gmail.com"],
+  "subject": "Test subject",
+  "body": "Test Body"
+}
+
+```

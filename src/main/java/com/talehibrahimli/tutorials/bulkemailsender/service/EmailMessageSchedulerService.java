@@ -11,6 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,8 @@ public class EmailMessageSchedulerService {
     private final EmailMessageRepository repository;
     private final EmailMessageSenderService emailMessageSenderService;
     private final EmailMessageMapper mapper;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(20);
+    private final Semaphore semaphore = new Semaphore(1000);
 
     @Scheduled(fixedDelay = 1000)
     public void schedule() {
@@ -36,15 +41,19 @@ public class EmailMessageSchedulerService {
 
                 EmailMessageDto dto = mapper.from(entity);
 
-                try {
-                    emailMessageSenderService.sendEmail(dto);
-                    entity.setStatus(EmailMessageStatus.SENT);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                    entity.setStatus(EmailMessageStatus.FAILED);
-                } finally {
-                    repository.save(entity);
-                }
+                semaphore.acquire();
+                executorService.submit(() -> {
+                    try {
+                        emailMessageSenderService.sendEmail(dto);
+                        entity.setStatus(EmailMessageStatus.SENT);
+                    } catch (Exception e) {
+                        log.error(e.getMessage(), e);
+                        entity.setStatus(EmailMessageStatus.FAILED);
+                    } finally {
+                        repository.save(entity);
+                        semaphore.release();
+                    }
+                });
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
