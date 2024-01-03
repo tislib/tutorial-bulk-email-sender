@@ -1,7 +1,8 @@
 Bulk Email Sender
 ========
 
-Youtube Video: https://www.youtube.com/watch?v=m941WwMeP88
+Youtube Videos: 
+Step1: https://www.youtube.com/watch?v=m941WwMeP88
 
 # Plan
 1. Simple Email Sender with Spring with persisting option + Sendgrid 
